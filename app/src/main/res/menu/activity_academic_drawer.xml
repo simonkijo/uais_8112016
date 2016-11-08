@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="@string/academics_management">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_am"
+                    android:icon="@mipmap/ic_library_books_black_18dp"
+                    android:title="@string/academic_materials" />
+                <item
+                    android:id="@+id/nav_sms"
+                    android:icon="@mipmap/ic_mail_black_18dp"
+                    android:title="@string/message" />
+            </group>
+        </menu>
+    </item>
+
+    <item android:title="@string/profile_settings">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_profile"
+                    android:icon="@mipmap/ic_person_black_18dp"
+                    android:title="@string/profile" />
+                <item
+                    android:id="@+id/nav_logout"
+                    android:icon="@mipmap/ic_lock_black_18dp"
+                    android:title="@string/log_out" />
+            </group>
+        </menu>
+    </item>
+
+</menu>

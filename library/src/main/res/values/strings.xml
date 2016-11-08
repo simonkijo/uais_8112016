@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="nothing"></string>
+    <string name="delete">delete</string>
+    <string name="check_all">check all</string>
+
+</resources>

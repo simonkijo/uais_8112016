@@ -1,0 +1,22 @@
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="commonListItemStyle">
+        <item name="android:elevation">@dimen/list_item_elevation</item>
+        <item name="android:outlineProvider">bounds</item>
+    </style>
+
+    <!--<style name="BrandedCheckBox" parent="AppTheme">
+        <item name="android:colorAccent">@color/colorPrimaryDark</item>
+        <item name="android:colorControlNormal">@color/colorPrimaryDark</item>
+        <item name="android:colorControlActivated">@color/colorPrimaryDark</item>
+        <item name="android:colorControlHighlight">@color/colorPrimaryDark</item>
+    </style>-->
+
+</resources>

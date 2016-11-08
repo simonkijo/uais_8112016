@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <!-- NOTE: requires non transparent color to cast item shadows -->
+    <color name="bg_swipe_item_neutral">@android:color/transparent</color>
+
+    <color name="bg_group_item_normal_state">#FFFFFF</color>  <!--#ffddffdd -->
+    <color name="bg_group_item_normal_pressed_state">#22000000</color>  <!-- #ff99cc99-->
+    <color name="bg_group_item_expanded_state">#FFFFFF</color>  <!-- #ff88dd88-->
+    <color name="bg_group_item_expanded_pressed_state">#22000000</color>  <!-- #ff99cc99-->
+    <color name="expandable_item_indicator_color">#42000000</color>
+    <color name="bg_item_normal_state">#fff0f0f0</color>
+</resources>

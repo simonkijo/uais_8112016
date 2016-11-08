@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_delete"
+        android:orderInCategory="1"
+        android:icon="@mipmap/ic_delete_white_24dp"
+        android:title="@string/delete"
+        android:visible="false"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_checkAll"
+        android:orderInCategory="2"
+        android:icon="@mipmap/ic_check_box_outline_blank_white_24dp"
+        android:checkable="true"
+        android:visible="false"
+        android:title="@string/check_all"
+        app:showAsAction="ifRoom" />
+</menu>

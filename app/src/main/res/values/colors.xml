@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#558b2f</color>  <!--#8bc34a-->
+    <color name="colorPrimaryDark">#558b2f</color>
+    <color name="colorAccent">#558b2f</color>
+
+    <color name="color_primary_red">#f44336</color>
+    <color name="color_primary_red_dark">#d32f2f</color>
+    <color name="color_primary_green_light">#00a65a</color>
+    <color name="color_primary_green">#4caf50</color>
+    <color name="color_primary_green_dark">#388e3c</color>
+    <color name="color_primary_blue">#2196f3</color>
+    <color name="color_primary_blue_dark">#1976d2</color>
+    <color name="color_shadow">#77000000</color>
+    <color name="color_white">#FFFFFF</color>
+    <color name="color_black">#000000</color>
+    <color name="color_black_light">#99000000</color>
+
+    <color name="color_bg_login">#d2d6de</color>
+    <color name="color_hint">#66000000</color>
+    <color name="btn_primary">#337ab7</color>
+    <color name="btn_primary_active">#16a5d7</color>
+    <color name="tv_active">#11000000</color>
+    <color name="transparent">#20000000</color>
+
+    <color name="bg_group_item_normal_state">#FFFFFF</color>  <!--#ffddffdd -->
+    <color name="bg_group_item_normal_pressed_state">#22000000</color>  <!-- #ff99cc99-->
+    <color name="bg_group_item_expanded_state">#FFFFFF</color>  <!-- #ff88dd88-->
+    <color name="bg_group_item_expanded_pressed_state">#22000000</color>  <!-- #ff99cc99-->
+    <color name="expandable_item_indicator_color">#42000000</color>
+    <color name="bg_item_normal_state">#fff0f0f0</color>
+
+    <!--colors extras-->
+    <color name="e_dark">#39d5eF</color>
+    <color name="light_blue">#6dcaec</color>
+    <color name="light_green">#689f38</color>
+    <color name="light_purple">#b368d9</color>
+    <color name="orange">#ffc641</color>
+    <color name="light_red">#ff8a00</color>
+    <color name="ocean">#a8dff4</color>
+    <color name="j">#e2f4fb</color>
+    <color name="purple">#9933cc</color>
+    <color name="green">#669900</color>
+    <color name="lime">#d3e992</color>
+    <color name="s">#ddbcee</color>
+    <color name="cornsilk">#FFF8DC</color>
+    <color name="moccasin">#FFE4B5</color>
+    <color name="text_primary">#FFFFFF</color>
+    <color name="photo_tint">#88101010</color>
+    <color name="bkg_card">#8C9EFF</color>
+    <color name="b_brown">#f0eef9</color>
+    <color name="dark_red">#e74c3c</color>
+    <color name="white">#FFFFFF</color>
+    <color name="tint">#38000600</color>
+</resources>

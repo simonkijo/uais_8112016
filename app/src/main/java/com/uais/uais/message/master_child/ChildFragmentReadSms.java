@@ -4,8 +4,10 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Html;
@@ -20,6 +22,7 @@ import com.uais.uais.LocalService;
 import com.uais.uais.R;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 
 import it.neokree.materialnavdrawer.MaterialNavigationDrawer;
 
@@ -93,6 +96,24 @@ public class ChildFragmentReadSms extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+        ArrayList<String> _subject = new ArrayList<>(sharedPrefs.getStringSet("subject",null));
+        Log.d(getClass().getName(),"before subject size: "+_subject.size());
+        //remove sms read
+        for(int i=0;i<_subject.size();i++){
+            Log.d(getClass().getName(),"toRemove: "+_subject.get(i)+" toCompareWith: "+b.getCharSequence(SUB));
+            if(_subject.get(i).equals(b.getCharSequence(SUB))){
+                Log.d(getClass().getName(),"toRemove_: "+_subject.get(i));
+                _subject.remove(i);
+            }
+        }
+        Log.d(getClass().getName(),"after subject size: "+_subject.size()+" toCompareWith: "+b.getCharSequence(SUB));
+        //set remained unread sms
+        SharedPreferences.Editor ed = sharedPrefs.edit();
+        ed.putStringSet("subject",new LinkedHashSet<>(_subject));
+        ed.apply();
+
         setSmsRead();
     }
 
@@ -121,7 +142,6 @@ public class ChildFragmentReadSms extends Fragment {
                     e.printStackTrace();
                 } finally {
                     if(stop) {
-                        //Log.d(getClass().getName()," smsid:cfrs "+b.getString(SMSID)+" sessionid:cfrs "+b.getString(SESSIONID_));
                         s.setRead(b.getString(SMSID), b.getString(SESSIONID_));
                         stop = false;
                     }

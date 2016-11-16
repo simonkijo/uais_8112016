@@ -4,7 +4,6 @@ package com.uais.uais.academicMaterials.common.fragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
-import com.uais.uais.academicMaterials.AdFragment;
 import com.uais.uais.academicMaterials.common.data.AbstractExpandableDataProvider;
 import com.uais.uais.academicMaterials.common.data.ExampleExpandableDataProvider;
 

@@ -12,7 +12,6 @@ import java.util.List;
 
 import com.uais.uais.R;
 import com.uais.uais.message.master_child.ChildFragmentMessage;
-import com.uais.uais.message.master_child.MasterFragmentInbox;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 

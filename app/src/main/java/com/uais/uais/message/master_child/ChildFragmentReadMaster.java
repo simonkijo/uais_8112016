@@ -22,8 +22,6 @@ import android.widget.RelativeLayout;
 
 import com.uais.uais.LocalService;
 import com.uais.uais.R;
-import com.uais.uais.Utils.UrlProvider;
-import com.uais.uais.detectinternetconnection.ConnectionDetector;
 import com.uais.uais.message.DataConstructor;
 import com.uais.uais.message.RecyclerAdapterRead;
 

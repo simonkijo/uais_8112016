@@ -1,23 +1,16 @@
 package com.uais.uais.message;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.uais.uais.R;
 import com.uais.uais.message.master_child.ChildFragmentReadMaster;
-import com.uais.uais.message.master_child.MasterFragmentRead;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

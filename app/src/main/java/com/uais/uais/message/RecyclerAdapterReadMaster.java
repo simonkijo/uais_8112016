@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.uais.uais.R;
-import com.uais.uais.message.master_child.MasterFragmentInbox;
 import com.uais.uais.message.master_child.MasterFragmentRead;
 
 import java.util.List;

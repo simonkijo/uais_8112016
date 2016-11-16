@@ -1,6 +1,6 @@
 package com.uais.uais;
 
-import android.app.Activity;
+
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -8,6 +8,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.BitmapFactory;
 import android.os.Binder;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
@@ -24,8 +25,6 @@ import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.SyncHttpClient;
 import com.uais.uais.Utils.UrlProvider;
 import com.uais.uais.academicMaterials.AcademicActivity;
-import com.uais.uais.academicMaterials.ExpandableExampleFragment;
-import com.uais.uais.academicMaterials.common.fragment.ExampleExpandableDataProviderFragment;
 import com.uais.uais.message.Accounts;
 
 import org.json.JSONArray;
@@ -36,7 +35,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
-import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -55,6 +53,8 @@ public class LocalService extends Service {
         getNewSms(sid);
         //notify new ad file
         getNewAdFiles(sid);
+        //notify new assignment file
+        getNewAssignmentFiles(sid);
 
         return Service.START_STICKY;
     }
@@ -370,7 +370,7 @@ public class LocalService extends Service {
                             ed.putStringSet("files",new LinkedHashSet<>(sp_files));
                             ed.apply();
 
-                            showNotificationsFile(count, modules_, files);
+                            showNotificationsFile(count, modules_, files,"new lecture notes", 1234567);
                         }else{
                             ArrayList<String> _files = new ArrayList<>(sharedPrefs.getStringSet("files", null));
 
@@ -409,7 +409,7 @@ public class LocalService extends Service {
                                     }
                                 }*/
                                 //end of testing data
-                                showNotificationsFile(remained_files.size(), mod_new, files_new);
+                                showNotificationsFile(remained_files.size(), mod_new, files_new,"new lecture notes", 1234567);
                             }
                         }
 
@@ -424,6 +424,138 @@ public class LocalService extends Service {
             }
         });
     }
+
+    private void getNewAssignmentFiles(String id){
+        final RequestParams params = new RequestParams();
+        params.put("stId", id);
+
+        final AsyncHttpClient client = new AsyncHttpClient();
+        client.post(UrlProvider.STUDENT_MODULES, params, new JsonHttpResponseHandler() {  //"http://www.uais.co.nf/mobile/studentModules"
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                super.onSuccess(statusCode, headers, response);
+                Log.d(getClass().getName()," statusCode: "+statusCode+" modules loaded");
+
+                final String modules_[] = new String[response.length()];
+
+                for (int i = 0; i < modules_.length; i++) {
+                    try {
+                        JSONObject jsondata = response.getJSONObject(i);
+                        modules_[i] = jsondata.getString("module");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                client.post(UrlProvider.STUDENT_ASSIGNMENT, params, new JsonHttpResponseHandler() {  //"http://www.uais.co.nf/mobile/studentAdNotes"
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, JSONArray response_) {
+                        super.onSuccess(statusCode, headers, response_);
+                        Log.d(getClass().getName()," statusCode: "+statusCode+" ad loaded");
+
+
+                        String sitems[][] = new String[modules_.length][response_.length()];
+
+                        for (int i = 0; i < sitems.length; i++) {
+                            for (int j = 0; j < sitems[i].length; j++) {
+                                try {
+                                    JSONObject jsondata = response_.getJSONObject(j);
+                                    sitems[i][j] = jsondata.getString(modules_[i]);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+
+                        //notify
+                        String files[][] = new String[modules_.length][response_.length()];
+                        ArrayList<String> sp_files = new ArrayList<>();
+                        ArrayList<String[][]> p = new ArrayList<>();
+
+                        int count = 0;
+                        for (int i = 0; i < modules_.length; i++) {
+                            for (int j = 0; j < sitems[i].length; j++) {
+                                if(sitems[i][j] != null){
+                                    if(sitems[i][j].equals("No file")){
+                                        //do nothing
+                                    }else{
+                                        files[i][j] = sitems[i][j];
+                                        sp_files.add(sitems[i][j]);
+                                        count ++;
+                                    }
+                                }
+                            }
+                        }
+                        p.add(files);
+                        //for testing data
+                        /*for (int i = 0; i < files.length; i++) {
+                            for (int j = 0; j < files[i].length; j++) {
+                                Log.d(getClass().getName()," count: "+count+" mod: " + modules_[i] + " file: " + files[i][j]);
+                            }
+                        }*/
+                        //end of testing data
+                        if(sharedPrefs.getStringSet("assignment_files",null) == null){
+                            SharedPreferences.Editor ed = sharedPrefs.edit();
+                            ed.putStringSet("assignment_files",new LinkedHashSet<>(sp_files));
+                            ed.apply();
+
+                            showNotificationsFile(count, modules_, files,"new assignment file"+(count==1? "":"s"), 12345678);
+                        }else{
+                            ArrayList<String> _files = new ArrayList<>(sharedPrefs.getStringSet("assignment_files", null));
+
+                            sp_files.removeAll(_files);
+                            Log.d(getClass().getName(),"remained assignment file size: "+sp_files.size());
+
+                            if(sp_files.size() >= 1){
+                                for(int i=0;i<sp_files.size();i++){
+                                    _files.add(sp_files.get(i));
+                                }
+                                SharedPreferences.Editor ed = sharedPrefs.edit();
+                                ed.putStringSet("assignment_files",new LinkedHashSet<>(_files));
+                                ed.apply();
+
+                                ArrayList<String> remained_files = new ArrayList<>(sp_files);
+                                String files_new[][] = new String[modules_.length][response_.length()];
+                                String mod_new[] = new String[modules_.length];
+
+                                for(int r=0;r<remained_files.size();r++) {
+                                    for (int k = 0; k < p.size(); k++) {
+                                        for (int j = 0; j < p.get(k).length; j++) {
+                                            for(int w=0;w < p.get(k)[j].length; w++) {
+                                                if (remained_files.get(r).equals(p.get(k)[j][w])) {
+                                                    Log.d(getClass().getName(), "remained: " + remained_files.get(r) + " p mod: " + modules_[j] + " p file: " + p.get(k)[j][w]);
+                                                    files_new[j][w] = p.get(k)[j][w];
+                                                    mod_new[j] = modules_[j];
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                //for testing data
+                                /*for (int t = 0; t < files_new.length; t++) {
+                                    for (int e = 0; e < files_new[t].length; e++) {
+                                        Log.d(getClass().getName(),"new count: "+remained_files.size()+" new mods: " + mod_new[t] + " new files: " + files_new[t][e]);
+                                    }
+                                }*/
+                                //end of testing data
+                                showNotificationsFile(remained_files.size(), mod_new, files_new,"new assignment file"+(remained_files.size()==1? "":"s"), 12345678);
+                            }
+                        }
+
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+                Log.d(getClass().getName()," statusCode: "+statusCode);
+            }
+        });
+    }
+
     private void showSingleNotification(NotificationManagerCompat nmc, int notify_id, ArrayList<String> subject,ArrayList<String> sms){
         // Set heads up
         int defaults = 0;
@@ -434,6 +566,7 @@ public class LocalService extends Service {
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+                .setLargeIcon(BitmapFactory.decodeResource(this.getResources(),R.mipmap.ic_launcher))
                 .setSmallIcon(R.mipmap.ic_message_white_18dp)
                 .setPriority(NotificationCompat.PRIORITY_HIGH) //set important
                 .setOnlyAlertOnce(true)  //set vibrate once
@@ -468,6 +601,7 @@ public class LocalService extends Service {
                 .setContentText(subjects.size()+" new message"+(subjects.size()==1? "":"s"))
                 .setStyle(is)
                 .setNumber(subjects.size())
+                .setLargeIcon(BitmapFactory.decodeResource(this.getResources(),R.mipmap.ic_launcher))
                 .setSmallIcon(R.mipmap.ic_message_white_18dp)
                 .setCategory(NotificationCompat.CATEGORY_EVENT)
                 .setPriority(NotificationCompat.PRIORITY_HIGH) //set important
@@ -489,7 +623,7 @@ public class LocalService extends Service {
         }
     }
     //notification for new file
-    private void showSingleNotificationFile(NotificationManagerCompat nmc, int notify_id, String module[],String file[][]){
+    private void showSingleNotificationFile(NotificationManagerCompat nmc, int notify_id, String module[],String file[][], String title){
         // Set heads up
         int defaults = 0;
         defaults = defaults | Notification.DEFAULT_VIBRATE | Notification.DEFAULT_LIGHTS | Notification.DEFAULT_SOUND;
@@ -499,6 +633,7 @@ public class LocalService extends Service {
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+                .setLargeIcon(BitmapFactory.decodeResource(this.getResources(),R.mipmap.ic_launcher))
                 .setSmallIcon(R.mipmap.ic_insert_drive_file_white_18dp)
                 .setPriority(NotificationCompat.PRIORITY_HIGH) //set important
                 .setOnlyAlertOnce(true)  //set vibrate once
@@ -508,15 +643,15 @@ public class LocalService extends Service {
         for(int i=0;i<module.length; i++){
             for(int j=0;j<file[i].length; j++) {
                 if(file[i][j] != null) {
-                    notificationBuilder.setContentTitle(module[i]);
-                    notificationBuilder.setContentText(file[i][j]);
+                    notificationBuilder.setContentTitle(title);
+                    notificationBuilder.setContentText(file[i][j]+" ("+module[i]+")");
                 }
             }
         }
         notificationBuilder.setContentIntent(contentIntent);
         nmc.notify(notify_id, notificationBuilder.build());
     }
-    private void showGroupSummaryNotificationFile(NotificationManagerCompat nmc,int notify_id, String module[],String file[][]){
+    private void showGroupSummaryNotificationFile(NotificationManagerCompat nmc,int notify_id, String module[],String file[][], String title){
         // Set heads up
         int defaults = 0;
         defaults = defaults | Notification.DEFAULT_VIBRATE | Notification.DEFAULT_LIGHTS | Notification.DEFAULT_SOUND;
@@ -530,17 +665,18 @@ public class LocalService extends Service {
         for(int i=0;i<module.length;i++){
             for(int j=0;j<file[i].length;j++){
                 if(file[i][j] != null) {
-                    is.addLine(file[i][j]);
+                    is.addLine(file[i][j]+" ("+module[i]+")");
                     count ++;
                 }
             }
         }
-        is.setBigContentTitle(count+" new file"+(count==1? "":"s"));
+        is.setBigContentTitle(count+" "+title);  //count+" new file"+(count==1? "":"s")
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
         builder.setContentTitle("UAIS")
-                .setContentText(count+" new file"+(count==1? "":"s"))
+                .setContentText(count+" "+title)
                 .setStyle(is)
+                .setLargeIcon(BitmapFactory.decodeResource(this.getResources(),R.mipmap.ic_launcher))
                 .setSmallIcon(R.mipmap.ic_insert_drive_file_white_18dp)
                 .setCategory(NotificationCompat.CATEGORY_EVENT)
                 .setPriority(NotificationCompat.PRIORITY_HIGH) //set important
@@ -551,13 +687,13 @@ public class LocalService extends Service {
         builder.setContentIntent(contentIntent);
         nmc.notify(notify_id, builder.build());
     }
-    private void showNotificationsFile(int notifyId, String module[],String file[][]){
+    private void showNotificationsFile(int notifyId, String module[],String file[][], String title, int notification_id){
         NotificationManagerCompat nmc = NotificationManagerCompat.from(this);
 
         if(notifyId ==1){
-            showSingleNotificationFile(nmc, 1234567, module, file);
+            showSingleNotificationFile(nmc, notification_id, module, file,title);
         }else if(notifyId > 1){
-            showGroupSummaryNotificationFile(nmc,1234567, module, file);
+            showGroupSummaryNotificationFile(nmc,notification_id, module, file,title);
         }
     }
 }

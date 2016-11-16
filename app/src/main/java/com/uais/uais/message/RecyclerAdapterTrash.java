@@ -6,14 +6,10 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.CheckBox;
 
 import com.uais.uais.R;
-import com.uais.uais.message.master_child.ChildFragmentOutBoxMaster;
 import com.uais.uais.message.master_child.ChildFragmentTrashMaster;
-import com.uais.uais.message.master_child.MasterFragmentTrash;
 
 import java.util.List;
 

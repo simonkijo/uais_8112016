@@ -7,9 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.SpinnerAdapter;
-import android.widget.TextView;
-
-import com.uais.uais.R;
 
 /**
  * Decorator Adapter to allow a Spinner to show a 'Nothing Selected...' initially

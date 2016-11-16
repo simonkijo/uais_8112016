@@ -1,7 +1,6 @@
 package com.uais.uais.message.master_child;
 
 import android.os.Bundle;
-import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Html;

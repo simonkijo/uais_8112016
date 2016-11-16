@@ -79,7 +79,6 @@
             android:textColor="@color/color_black_light"/>
     </ScrollView>
     <RelativeLayout
-        android:id="@+id/reply_container"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_alignParentBottom="true"
@@ -107,7 +106,6 @@
                 android:id="@+id/iv_reply"
                 android:contentDescription="@string/reply_button" />
             <TextView
-                android:id="@+id/tv_reply"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/reply"

@@ -123,12 +123,14 @@
                 android:layout_width="wrap_content"
                 android:orientation="horizontal">
                <RadioButton
+                   android:id="@+id/radio_male"
                    android:layout_height="wrap_content"
                    android:layout_width="wrap_content"
                    android:text="@string/prompt_male"
                    android:checked="true"
                    android:textColor="@color/color_hint"/>
                 <RadioButton
+                    android:id="@+id/radio_female"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:text="@string/prompt_female"
